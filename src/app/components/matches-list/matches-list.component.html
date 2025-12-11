@@ -1,0 +1,34 @@
+<div class="matches-container" *ngIf="vm$ | async as vm">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Матчи ({{vm.matches.length}})</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+
+      <div *ngIf="vm.matches.length === 0" class="empty-state">
+        <p>Матчи еще не созданы</p>
+      </div>
+
+      <mat-list>
+        <div *ngFor="let m of vm.matches" class="match-item">
+          <div class="player-name" [class.winner]="m.match.winnerId === m.p1.id">
+            {{ m.p1.name }}
+          </div>
+
+          <div class="score-inputs">
+            <input type="number" [ngModel]="m.match.score1"
+                   (change)="updateScore(m.match, $any($event.target).value, m.match.score2)" class="score-box">
+            <span>:</span>
+            <input type="number" [ngModel]="m.match.score2"
+                   (change)="updateScore(m.match, m.match.score1, $any($event.target).value)" class="score-box">
+          </div>
+
+          <div class="player-name" [class.winner]="m.match.winnerId === m.p2.id">
+            {{ m.p2.name }}
+          </div>
+        </div>
+      </mat-list>
+
+    </mat-card-content>
+  </mat-card>
+</div>

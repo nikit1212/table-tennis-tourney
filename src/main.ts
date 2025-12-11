@@ -1,6 +1,18 @@
 import { bootstrapApplication } from '@angular/platform-browser';
-import { appConfig } from './app/app.config';
-import { App } from './app/app';
+import { provideRouter } from '@angular/router';
+import { provideStore } from '@ngrx/store';
+import { provideEffects } from '@ngrx/effects';
+import { AppComponent } from './app/app.component';
+import { tournamentReducer } from './app/store/tournament/tournament.reducer';
+import { TournamentEffects } from './app/store/tournament/tournament.effects';
+import { routes } from './app/app.routes';
+import { XlsxService } from './app/services/xlsx.service';
 
-bootstrapApplication(App, appConfig)
-  .catch((err) => console.error(err));
+void bootstrapApplication(AppComponent, {
+  providers: [
+    provideRouter(routes),
+    provideStore({ tournament: tournamentReducer }),
+    provideEffects([TournamentEffects]),
+    XlsxService
+  ]
+});

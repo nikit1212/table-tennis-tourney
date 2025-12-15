@@ -6,8 +6,9 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
-import { TournamentState } from '../../store/tournament/tournament.reducer';
+import { TournamentState } from '../../store/tournament.reducer';
 import {MatCard, MatCardContent, MatCardHeader, MatCardTitle} from '@angular/material/card';
+import {UntilDestroy, untilDestroyed} from '@ngneat/until-destroy';
 
 interface Player {
   id: number;
@@ -16,6 +17,7 @@ interface Player {
   team?: string;
 }
 
+@UntilDestroy()
 @Component({
   selector: 'app-players-table',
   standalone: true,
@@ -39,8 +41,11 @@ export class PlayersTableComponent implements OnInit {
   dataSource = new MatTableDataSource<Player>([]);
 
   ngOnInit() {
-    this.store.select(state => state.tournament.tournament?.players || []).subscribe(players => {
-      this.dataSource.data = players;
-    });
+    this.store
+      .select(state => state.tournament.tournament?.players || [])
+      .pipe(untilDestroyed(this))
+      .subscribe(players => {
+        this.dataSource.data = players;
+      });
   }
 }

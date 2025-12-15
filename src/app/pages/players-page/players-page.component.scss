@@ -1,0 +1,14 @@
+.player-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  mat-form-field {
+    min-width: 180px;
+  }
+}
+
+.players-table {
+  width: 100%;
+}

@@ -1,0 +1,62 @@
+<mat-card>
+  <mat-card-title>Игроки</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="playerForm" class="player-form" (ngSubmit)="onCreate()">
+      <mat-form-field appearance="outline">
+        <mat-label>Имя</mat-label>
+        <input matInput formControlName="first_name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Фамилия</mat-label>
+        <input matInput formControlName="last_name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Пол</mat-label>
+        <mat-select formControlName="gender">
+          <mat-option value="M">Мужской</mat-option>
+          <mat-option value="F">Женский</mat-option>
+          <mat-option value="O">Другое</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="playerForm.invalid">
+        Добавить
+      </button>
+    </form>
+
+    <table
+      mat-table
+      [dataSource]="(state$ | async)?.players || []"
+      class="mat-elevation-z8 players-table"
+    >
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let p">{{ p.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Имя Фамилия</th>
+        <td mat-cell *matCellDef="let p">{{ p.first_name }} {{ p.last_name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="gender">
+        <th mat-header-cell *matHeaderCellDef>Пол</th>
+        <td mat-cell *matCellDef="let p">{{ p.gender }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let p">
+          <button mat-icon-button color="warn" (click)="onDelete(p.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>

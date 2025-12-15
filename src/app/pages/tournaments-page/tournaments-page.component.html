@@ -1,0 +1,161 @@
+<mat-card>
+  <mat-card-title>Турниры</mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="tournamentForm" class="tournament-form" (ngSubmit)="onCreate()">
+      <mat-form-field appearance="outline">
+        <mat-label>Название турнира</mat-label>
+        <input matInput formControlName="name"/>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit" [disabled]="tournamentForm.invalid">
+        Создать
+      </button>
+    </form>
+
+    <table
+      mat-table
+      [dataSource]="(state$ | async)?.tournaments || []"
+      class="mat-elevation-z8 tournaments-table"
+    >
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef>#</th>
+        <td mat-cell *matCellDef="let t">{{ t.id }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Название</th>
+        <td mat-cell *matCellDef="let t">{{ t.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef>Статус</th>
+        <td mat-cell *matCellDef="let t">{{ t.status }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let t">
+          <button mat-button color="primary" (click)="selectTournament(t.id)">
+            Открыть
+          </button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </mat-card-content>
+</mat-card>
+@if ((state$ | async)?.currentTournamentId; as tid) {
+  <mat-card class="mt-16">
+    <mat-card-title>Турнир #{{ tid }}</mat-card-title>
+    <mat-card-content>
+      <h3>Участники</h3>
+      <div class="participants-block">
+        <div class="players-list">
+          <p>Игроки:</p>
+          @if ((state$ | async)?.players; as players) {
+            @for (p of players; track p.id) {
+              <mat-checkbox
+                [checked]="selectedPlayerIds.includes(p.id)"
+                (change)="togglePlayerSelection(p.id, $event.checked)"
+              >
+                {{ p.first_name }} {{ p.last_name }}
+              </mat-checkbox>
+
+            }
+          }
+        </div>
+        <button mat-raised-button color="accent" (click)="addParticipants(tid)">
+          Добавить участников
+        </button>
+        <button mat-stroked-button color="primary" (click)="generateMatches(tid)">
+          Сгенерировать матчи
+        </button>
+      </div>
+
+      <h3>Матчи</h3>
+      <table
+        mat-table
+        [dataSource]="(state$ | async)?.matches || []"
+        class="mat-elevation-z8 matches-table"
+      >
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let m">{{ m.id }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="teams">
+          <th mat-header-cell *matHeaderCellDef>Матч</th>
+          <td mat-cell *matCellDef="let m">
+            {{ (state$ | async)?.teamPlayersMap[ m.team1_id ]?.first_name }}
+            {{ (state$ | async)?.teamPlayersMap[ m.team1_id ]?.last_name }}
+            vs
+            {{ (state$ | async)?.teamPlayersMap[ m.team2_id ]?.first_name }}
+            {{ (state$ | async)?.teamPlayersMap[ m.team2_id ]?.last_name }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="score">
+          <th mat-header-cell *matHeaderCellDef>Счёт (сеты)</th>
+          <td mat-cell *matCellDef="let m">
+            <input type="number" [value]="m.team1_score" class="score-input" #s1/>
+            :
+            <input type="number" [value]="m.team2_score" class="score-input" #s2/>
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="updateScore(m.id, s1.value, s2.value)"
+            >
+              <mat-icon>check</mat-icon>
+            </button>
+
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['id', 'teams', 'score']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['id', 'teams', 'score']"></tr>
+      </table>
+
+      <h3>Турнирная таблица</h3>
+      <table
+        mat-table
+        [dataSource]="(state$ | async)?.standings || []"
+        class="mat-elevation-z8 standings-table"
+      >
+        <ng-container matColumnDef="pos">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let s; let i = index">{{ i + 1 }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>Игрок</th>
+          <td mat-cell *matCellDef="let s">{{ s.first_name }} {{ s.last_name }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="played">
+          <th mat-header-cell *matHeaderCellDef>И</th>
+          <td mat-cell *matCellDef="let s">{{ s.played }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="won">
+          <th mat-header-cell *matHeaderCellDef>В</th>
+          <td mat-cell *matCellDef="let s">{{ s.won }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="lost">
+          <th mat-header-cell *matHeaderCellDef>П</th>
+          <td mat-cell *matCellDef="let s">{{ s.lost }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="points">
+          <th mat-header-cell *matHeaderCellDef>Очки</th>
+          <td mat-cell *matCellDef="let s">{{ s.points }}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="['pos','name','played','won','lost','points']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['pos','name','played','won','lost','points']"></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+}

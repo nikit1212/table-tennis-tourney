@@ -2,8 +2,10 @@
   flex: 1 1 auto;
 }
 
-.content {
-  padding: 24px;
-  max-width: 1400px;
-  margin: 0 auto;
+.app-content {
+  padding: 16px 24px;
+}
+.active-link {
+  font-weight: 600;
+  text-decoration: underline;
 }

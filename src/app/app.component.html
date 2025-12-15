@@ -2,22 +2,9 @@
   <span>🏓 Table Tennis Tournament</span>
   <span class="spacer"></span>
 
-  <input type="file" #fileInput accept=".xlsx" (change)="loadTournament($event)" style="display:none">
-
-  <button mat-icon-button (click)="fileInput.click()" title="Загрузить XLSX">
-    <mat-icon>upload_file</mat-icon>
-  </button>
-
-  <button mat-raised-button color="accent" (click)="generateMatches()">
-    <mat-icon>casino</mat-icon>
-    Сгенерировать матч
-  </button>
+  <app-navigation-bar></app-navigation-bar>
 </mat-toolbar>
 
-<div class="content">
-  <app-players-table></app-players-table>
-
-  <div style="margin-top: 20px;">
-    <app-matches-list></app-matches-list>
-  </div>
+<div class="app-content">
+  <router-outlet></router-outlet>
 </div>

@@ -1,0 +1,28 @@
+<table
+  mat-table
+  [dataSource]="(state$ | async)?.history || []"
+  class="mat-elevation-z8"
+>
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef>Турнир</th>
+    <td mat-cell *matCellDef="let t">{{ t.name }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="mode">
+    <th mat-header-cell *matHeaderCellDef>Режим</th>
+    <td mat-cell *matCellDef="let t">{{ t.mode }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="team_type">
+    <th mat-header-cell *matHeaderCellDef>Тип</th>
+    <td mat-cell *matCellDef="let t">{{ t.team_type }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="finished_at">
+    <th mat-header-cell *matHeaderCellDef>Завершён</th>
+    <td mat-cell *matCellDef="let t">{{ t.finished_at | date }}</td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="['name', 'mode', 'team_type', 'finished_at']"></tr>
+  <tr mat-row *matRowDef="let row; columns: ['name', 'mode', 'team_type', 'finished_at']"></tr>
+</table>

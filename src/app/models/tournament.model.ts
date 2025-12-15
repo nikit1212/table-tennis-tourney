@@ -14,10 +14,3 @@ export interface Match {
   round: number;
   winnerId?: number;
 }
-
-export interface Tournament {
-  id: string;
-  name: string;
-  players: Player[];
-  matches: Match[];
-}

@@ -1,0 +1,41 @@
+.tournament-form {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  mat-form-field {
+    flex: 1;
+  }
+}
+
+.tournaments-table,
+.matches-table,
+.standings-table {
+  width: 100%;
+  margin-top: 12px;
+}
+
+.participants-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  .players-list {
+    max-height: 200px;
+    overflow: auto;
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 4px;
+    min-width: 220px;
+  }
+}
+
+.score-input {
+  width: 48px;
+  text-align: center;
+}
+
+.mt-16 {
+  margin-top: 16px;
+}

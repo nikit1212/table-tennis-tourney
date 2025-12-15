@@ -1,4 +1,8 @@
-.matches-container { max-width: 800px; margin: 20px auto; }
+.matches-container {
+  max-width: 800px;
+  margin: 20px auto;
+}
+
 .match-item {
   display: flex;
   align-items: center;
@@ -6,14 +10,25 @@
   padding: 10px 0;
   border-bottom: 1px solid #eee;
 }
-.player-name { flex: 1; text-align: center; font-size: 16px; }
-.winner { font-weight: bold; color: green; }
+
+.player-name {
+  flex: 1;
+  text-align: center;
+  font-size: 16px;
+}
+
+.winner {
+  font-weight: bold;
+  color: green;
+}
+
 .score-inputs {
   display: flex;
   align-items: center;
   gap: 10px;
   font-weight: bold;
 }
+
 .score-box {
   width: 40px;
   height: 30px;
@@ -22,4 +37,9 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
-.empty-state { padding: 20px; text-align: center; color: #777; }
+
+.empty-state {
+  padding: 20px;
+  text-align: center;
+  color: #777;
+}

@@ -24,6 +24,7 @@ export enum TournamentStatus {
   generateMatches = '[Tournament] Generate Matches Request',
   updateMatchScore = '[Tournament] Update Match Score Request',
   loadHistory = '[History] load History',
+  finishTournament = '[Tournament] Finish Tournament',
 }
 
 export const loadPlayers = createAction(TournamentStatus.loadPlayers);
@@ -140,5 +141,20 @@ export const loadHistorySuccess = createAction(
 export const loadHistoryFailure = createAction(
   TournamentStatus.loadHistory + TournamentStatus.failure,
   props<{ error: string }>()
+);
+
+export const finishTournament = createAction(
+  TournamentStatus.finishTournament,
+  props<{ id: number }>()
+);
+
+export const finishTournamentSucces = createAction(
+  TournamentStatus.finishTournament + TournamentStatus.success,
+  props<{ id: number }>()
+);
+
+export const finishTournamentFailure = createAction(
+  TournamentStatus.finishTournament + TournamentStatus.failure,
+  props<{ id: number, error: string }>()
 );
 

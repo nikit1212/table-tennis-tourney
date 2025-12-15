@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {
@@ -14,8 +14,7 @@ const API_BASE = 'http://localhost:3000/api';
 
 @Injectable({providedIn: 'root'})
 export class TournamentApiService {
-  constructor(private http: HttpClient) {
-  }
+  private http: HttpClient = inject(HttpClient);
 
   getPlayers(activeOnly = true): Observable<PlayerDto[]> {
     return this.http.get<PlayerDto[]>(`${API_BASE}/players`, {
@@ -89,5 +88,9 @@ export class TournamentApiService {
 
   updateMatchScore(matchId: number, team1_score: number, team2_score: number) {
     return this.http.put<MatchDto>(`${API_BASE}/matches/${matchId}/score`, {team1_score, team2_score});
+  }
+
+  finishTournament(id: number) {
+    return this.http.post(`/api/tournaments/${id}/finish`, {});
   }
 }

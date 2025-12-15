@@ -229,4 +229,25 @@ export class TournamentEffects {
       )
     )
   );
+
+  finishTournament$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(TournamentActions.finishTournament),
+      mergeMap(({ id }) =>
+        this.api.finishTournament(id).pipe(
+          mergeMap(() => [
+            TournamentActions.loadTournamentDetails({ id }),
+            TournamentActions.loadHistory()
+          ]),
+          catchError(err => of(
+            TournamentActions.finishTournamentFailure({
+              id: err.id,
+              error: err.message || 'Update match score error'
+            })
+          ))
+        )
+      )
+    )
+  );
+
 }

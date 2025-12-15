@@ -1,24 +1,129 @@
 @use '@angular/material' as mat;
 
-html {
-  @include mat.theme((
-    color: (
-      primary: mat.$green-palette,
-      tertiary: mat.$red-palette,
-    ),
-    typography: Roboto,
-    density: 0,
-  ));
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: local('TT Norms'), url('https://fonts.cdnfonts.com/s/32001/TTNorms-Medium.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: local('TT Norms'), url('https://fonts.cdnfonts.com/s/32001/TTNorms-Medium.woff') format('woff');
+  font-weight: 500;
+  font-style: normal;
+}
+
+$primary: #009BCE;
+$on-primary: #FFFFFF;
+$primary-container: #E6FDFF;
+$on-primary-container: #002136;
+
+$secondary: #005982;
+$on-secondary: #FFFFFF;
+$secondary-container: #A3F4FF;
+$on-secondary-container: #002136;
+
+$tertiary: #009BCE;
+$on-tertiary: #FFFFFF;
+$tertiary-container: #E6FDFF;
+$on-tertiary-container: #002136;
+
+$background: #F5F5F5;
+$on-background: #1A1A1A;
+$surface: #FFFFFF;
+$on-surface: #1A1A1A;
+$surface-variant: #F5F5F5;
+$on-surface-variant: #717171;
+
+$outline: #AAAAAA;
+$outline-variant: #C6C6C6;
+
+$success:  #00B578;
+$warning:  #FF8F1F;
+$error:    #FF3141;
+$on-error: #FFFFFF;
+$error-container: #FFDAD6;
+
+$biv-theme: mat.define-theme((
+  color: (
+    theme-type: light,
+    primary: mat.$cyan-palette,
+    tertiary: mat.$cyan-palette,
+  ),
+  typography: (
+    brand-family: 'TT Norms Pro',
+    plain-family: 'TT Norms Pro',
+    medium-weight: 500,
+    bold-weight: 700,
+  ),
+  density: (
+    scale: 0
+  )
+));
+
+:root {
+  @include mat.all-component-themes($biv-theme);
+
+  --mat-sys-primary: #{$primary};
+  --mat-sys-on-primary: #{$on-primary};
+  --mat-sys-primary-container: #{$primary-container};
+  --mat-sys-on-primary-container: #{$on-primary-container};
+
+  --mat-sys-secondary: #{$secondary};
+  --mat-sys-on-secondary: #{$on-secondary};
+  --mat-sys-secondary-container: #{$secondary-container};
+  --mat-sys-on-secondary-container: #{$on-secondary-container};
+
+  --mat-sys-tertiary: #{$tertiary};
+  --mat-sys-on-tertiary: #{$on-tertiary};
+  --mat-sys-tertiary-container: #{$tertiary-container};
+  --mat-sys-on-tertiary-container: #{$on-tertiary-container};
+
+  --mat-sys-background: #{$background};
+  --mat-sys-on-background: #{$on-background};
+
+  --mat-sys-surface: #{$surface};
+  --mat-sys-on-surface: #{$on-surface};
+  --mat-sys-surface-variant: #{$surface-variant};
+  --mat-sys-on-surface-variant: #{$on-surface-variant};
+
+  --mat-sys-outline: #{$outline};
+  --mat-sys-outline-variant: #{$outline-variant};
+
+  --mat-sys-error: #{$error};
+  --mat-sys-on-error: #{$on-error};
+  --mat-sys-error-container: #FFDAD6;
+  --mat-sys-on-error-container: #410002;
+
+  --mat-sys-inverse-surface: #{$on-surface};
+  --mat-sys-inverse-on-surface: #{$surface};
+  --mat-sys-inverse-primary: #{$primary};
+
+  --mat-sys-scrim: #000000;
+  --mat-sys-shadow: #000000;
+
+  --mat-toolbar-container-background-color: #{$secondary};
+  --mat-toolbar-container-text-color: #{$on-primary};
+  --mat-form-field-outlined-focus-outline-color: #{$primary};
+  --mat-form-field-outlined-focus-label-text-color: #{$secondary};
+  --mat-tab-inactive-focus-label-text-color: #{$on-primary};
+  --mat-tab-inactive-label-text-color: #{$on-secondary-container};
 }
 
 body {
   color-scheme: light;
-  background-color: var(--mat-sys-surface);
-  color: var(--mat-sys-on-surface);
-  font: var(--mat-sys-body-medium);
-
+  background-color: var(--mat-sys-background);
+  color: var(--mat-sys-on-background);
   margin: 0;
+  font-family: "TT Norms Pro", sans-serif;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html, body {
+  height: 100%;
+}
+
+app-root {
+  display: block;
+  height: 100%;
+}
+

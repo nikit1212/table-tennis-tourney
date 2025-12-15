@@ -189,7 +189,7 @@ app.post('/api/tournaments/:id/finish', (req, res) => {
     `,
     [nowIso(), id],
     function (err) {
-      if (err) return res.status(500).json({ error: err.message });
+      if (err) return res.status(500).json({ error: err.message, id: id });
       if (this.changes === 0) return res.status(404).json({ error: 'Tournament not found' });
       db.get('SELECT * FROM tournaments WHERE id = ?', [id], (err2, row) => {
         if (err2) return res.status(500).json({ error: err2.message });
